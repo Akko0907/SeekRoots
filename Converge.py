@@ -1,15 +1,39 @@
 import numpy as np
 
-def check_err(x0,xn,err):
+
+#========================================================================
+#========================================================================
+
+
+def check_err(x0: float,xn: float,err: float) -> bool:
     """ Check error"""
 
     error = abs(x0-xn)
-    if error>=err:
+    if np.any(error>=err):
         return True
     else:
         return False
 
-def ZeroExists(f,a,b):
+
+#========================================================================
+#========================================================================
+
+
+def check_err2(f: function,xn: float,err: float) -> bool:
+    """ Check error"""
+
+    error = abs(f(xn))
+    if np.any(error>=err):
+        return True
+    else:
+        return False
+
+
+#========================================================================
+#========================================================================
+
+
+def ZeroExists(f: function,a: float,b: float) -> bool:
     """Check existence of a zero in the function"""
     I = np.linspace(a,b,100)
     f_vec = f(I)
@@ -22,8 +46,13 @@ def ZeroExists(f,a,b):
     else:
         return False
 
-def NumDiff(x_vec,f):
-    """Uses finite differences to generate derivatives of f"""
+
+#========================================================================
+#========================================================================
+
+
+def Diff(x_vec: np.ndarray,f: function) -> np.ndarray:
+    """Uses finite differences to generate a derivatives table of f"""
     
     N = len(x_vec)
     dx = x_vec[1:]-x_vec[0:N-1]
@@ -35,11 +64,17 @@ def NumDiff(x_vec,f):
 
     return del_f
 
-def FpConv(g,a,b,pace=0.1):
+
+#========================================================================
+#========================================================================
+
+
+def FpConv(g: function,a: float,b: float,pace: float=0.1) -> bool:
     """Check convergence of fixed-point method with g function
     in the interval [a,b]"""
+    
     x_vec = np.arange(a,b+pace,pace)
-    del_g = NumDiff(x_vec,g)
+    del_g = Diff(x_vec,g)
 
     if np.all(abs(del_g)<=1):
         return True
